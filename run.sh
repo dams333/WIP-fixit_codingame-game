@@ -1,0 +1,1 @@
+mvn -Dexec.classpathScope=test -Dexec.mainClass=Main test-compile exec:java

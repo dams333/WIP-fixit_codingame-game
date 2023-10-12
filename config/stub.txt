@@ -1,1 +1,4 @@
 gameloop
+read str:string(1000)
+
+write output

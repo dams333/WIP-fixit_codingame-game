@@ -1,4 +1,4 @@
-package ch.dams333.game;
+package com.codingame.game;
 import java.util.List;
 import java.util.Random;
 
@@ -41,7 +41,7 @@ public class Referee extends AbstractReferee {
 				if (outputs.size() != 1)
 					player.deactivate(String.format("$%d outputs (1 required)!", player.getIndex()));
 				else
-					gameManager.addToGameSummary(String.format("Player %s played ($s)", player.getNicknameToken(), outputs.get(0)));
+					gameManager.addToGameSummary(String.format("Player %s sended: %s", player.getNicknameToken(), outputs.get(0)));
             } catch (TimeoutException e) {
 				gameManager.addToGameSummary(GameManager.formatErrorMessage(player.getNicknameToken() + " timeout!"));
                 player.deactivate(String.format("$%d timeout!", player.getIndex()));

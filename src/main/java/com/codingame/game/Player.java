@@ -1,4 +1,4 @@
-package ch.dams333.game;
+package com.codingame.game;
 import com.codingame.gameengine.core.AbstractMultiplayerPlayer;
 
 public class Player extends AbstractMultiplayerPlayer {

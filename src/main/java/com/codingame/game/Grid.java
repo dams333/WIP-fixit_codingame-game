@@ -82,4 +82,19 @@ public class Grid {
 			}
 		}
 	}
+
+	public int getMapWidth() {
+		return gridWidth;
+	}
+	public int getMapHeight() {
+		return gridHeight;
+	}
+
+	public List<String> exportFixers(int playerIndex) {
+		List<String> fixersExport = new ArrayList<String>(fixers.size());
+		for (Fixer fixer : fixers) {
+			fixersExport.add(fixer.export(playerIndex));
+		}
+		return fixersExport;
+	}
 }

@@ -29,9 +29,13 @@ public class Referee extends AbstractReferee {
 		gameManager.setFrameDuration(2000);
 
         drawBackground();
+		int mapWidth = grid.getMapWidth();
+		int mapHeight = grid.getMapHeight();
 		for (Player player : gameManager.getPlayers()) {
             int x = player.getIndex() == 0 ? 0 : 1920 - 600;
 			player.initHud(x);
+			player.sendInputLine("" + mapWidth);
+			player.sendInputLine("" + mapHeight);
         }
 		grid.initGrid(random, gameManager);
     }
@@ -54,6 +58,11 @@ public class Referee extends AbstractReferee {
         for (Player player : gameManager.getActivePlayers()) {
             player.sendInputLine("" + gridExport.size());
 			for (String line : gridExport) {
+				player.sendInputLine(line);
+			}
+			List<String> fixersExport = grid.exportFixers(player.getIndex());
+			player.sendInputLine("" + fixersExport.size());
+			for (String line : fixersExport) {
 				player.sendInputLine(line);
 			}
             player.execute();

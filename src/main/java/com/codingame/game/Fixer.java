@@ -34,7 +34,7 @@ public class Fixer {
 
 	public void update() {
 		graphicEntityModule.commitEntityState(0, sprite);
-		sprite.setX(x * 150 + 64 + (ownerIndex == 0 ? 0 : 150 - 64));
+		sprite.setX(x * 150 + 64 + (ownerIndex == 0 ? 10 : 150 - 64 - 10));
 		sprite.setY(y * 150 + 248 + 10);
 		graphicEntityModule.commitEntityState(0.3, sprite);
 	}
@@ -63,5 +63,9 @@ public class Fixer {
 		this.x = x;
 		this.y = y;
 		this.update();
+	}
+
+	public String export(int playerIndex) {
+		return String.format("%d %d %d %d", id, x, y, playerIndex == ownerIndex ? 1 : -1);
 	}
 }

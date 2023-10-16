@@ -1,22 +1,44 @@
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
+import java.math.*;
 
-public class Agent2 {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+/**
+ * Auto-generated code below aims at helping you parse
+ * the standard input according to the problem statement.
+ **/
+class Agent2 {
 
+    public static void main(String args[]) {
+        Scanner in = new Scanner(System.in);
+        int mapWidth = in.nextInt();
+        int mapHeight = in.nextInt();
+
+        // game loop
         while (true) {
-            String input = scanner.nextLine();
-			int n = Integer.parseInt(input);
-			System.err.println("inputs: " + n);
-			for (int i = 0; i < n; i++) {
-				String line = scanner.nextLine();
-			}
+            int caseCount = in.nextInt();
+            for (int i = 0; i < caseCount; i++) {
+                int x = in.nextInt();
+                int y = in.nextInt();
+                int bugLevel = in.nextInt(); // 0 = no bug / 1,2,3 = bug level on the case
+            }
+            int fixerCount = in.nextInt();
+			int myFixerId = -1;
+            for (int i = 0; i < fixerCount; i++) {
+                int id = in.nextInt();
+                int x = in.nextInt();
+                int y = in.nextInt();
+                int owner = in.nextInt(); // 1 = you / -1 = opponent
+				if (owner == 1)
+					myFixerId = id;
+            }
 
-			Random random = new Random();
+            // Write an answer using System.out.println()
+            // To debug: System.err.println("Debug messages...");
 
-			System.out.println("MOVE 1 " + random.nextInt(11) + " " + random.nextInt(4));
+			Random rand = new Random();
+			int x = rand.nextInt(mapWidth);
+			int y = rand.nextInt(mapHeight);
+            System.out.println("MOVE " + myFixerId + " " + x + " " + y); // MOVE <id> <x> <y>
         }
-
     }
 }

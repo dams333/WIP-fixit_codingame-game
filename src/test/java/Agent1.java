@@ -6,7 +6,14 @@ public class Agent1 {
 
         while (true) {
             String input = scanner.nextLine();
-            System.out.println("my output");
+			int n = Integer.parseInt(input);
+			System.err.println("inputs: " + n);
+			for (int i = 0; i < n; i++) {
+				String line = scanner.nextLine();
+			}
+
+			System.out.println("0 0");
         }
+
     }
 }

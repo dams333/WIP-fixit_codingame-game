@@ -18,8 +18,12 @@ public class Cell {
 	private Group displayGroup;
 	private Circle bugCircle;
 	private int bugLevel = 0;
+	private Random random;
 
-	public Cell(int x, int y, GraphicEntityModule graphicEntityModule, TooltipModule tooltips) {
+	private int turnToUpgradeBug = 0;
+
+	public Cell(int x, int y, GraphicEntityModule graphicEntityModule, TooltipModule tooltips, Random random) {
+		this.random = random;
 		this.graphicEntityModule = graphicEntityModule;
 		this.tooltips = tooltips;
 		this.x = x;
@@ -43,7 +47,28 @@ public class Cell {
 		this.updateDisplay();
 	}
 
-	public void updateDisplay() {
+	public void spawnBug() {
+		if (bugLevel == 0) {
+			bugLevel = 1;
+			turnToUpgradeBug = random.nextInt(3) + 2;
+		}
+	}
+
+	public void update() {
+		if (turnToUpgradeBug > 0) {
+			turnToUpgradeBug--;
+			if (turnToUpgradeBug == 0) {
+				if (bugLevel < 3)
+					bugLevel++;
+				if (bugLevel < 3)
+					turnToUpgradeBug = random.nextInt(3) + 2;
+			}
+		}
+
+		this.updateDisplay();
+	}
+
+	private void updateDisplay() {
 		if (bugLevel > 0) {
 			bugCircle.setAlpha(0.5);
 			switch (bugLevel) {
@@ -77,5 +102,9 @@ public class Cell {
 		if (!(other instanceof Cell))return false;
 		Cell otherCell = (Cell)other;
 		return otherCell.x == x && otherCell.y == y;
+	}
+
+	public String export() {
+		return String.format("%d %d %d", x, y, bugLevel);
 	}
 }

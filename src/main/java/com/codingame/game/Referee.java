@@ -47,8 +47,12 @@ public class Referee extends AbstractReferee {
 
     @Override
     public void gameTurn(int turn) {
+		List<String> gridExport = grid.export();
         for (Player player : gameManager.getActivePlayers()) {
-            player.sendInputLine("input");
+            player.sendInputLine("" + gridExport.size());
+			for (String line : gridExport) {
+				player.sendInputLine(line);
+			}
             player.execute();
         }
 
@@ -56,9 +60,10 @@ public class Referee extends AbstractReferee {
             try {
                 List<String> outputs = player.getOutputs();
 				if (outputs.size() != 1)
-					player.deactivate(String.format("$%d outputs (1 required)!", player.getIndex()));
-				else
-					gameManager.addToGameSummary(String.format("Player %s sended: %s", player.getNicknameToken(), outputs.get(0)));
+					player.deactivate(String.format("$%d outputs (1 required)!", outputs.size()));
+				else {
+
+				}
             } catch (TimeoutException e) {
 				gameManager.addToGameSummary(GameManager.formatErrorMessage(player.getNicknameToken() + " timeout!"));
                 player.deactivate(String.format("$%d timeout!", player.getIndex()));
@@ -67,7 +72,7 @@ public class Referee extends AbstractReferee {
             }
         }
 
-		grid.updateGrid();
+		grid.update();
 		drawHud();
     }
 

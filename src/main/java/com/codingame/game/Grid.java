@@ -25,16 +25,29 @@ public class Grid {
 		for(int x = 0; x < gridWidth; x++) {
 			grid.add(new ArrayList<Cell>(gridHeight));
 			for(int y = 0; y < gridHeight; y++) {
-				grid.get(x).add(new Cell(x, y, graphicEntityModule, tooltips));
+				grid.get(x).add(new Cell(x, y, graphicEntityModule, tooltips, random));
 			}
 		}
 	}
 
-	public void updateGrid() {
+	public void update() {
+		int cell = random.nextInt(gridWidth * gridHeight);
+		grid.get(cell % gridWidth).get(cell / gridWidth).spawnBug();
+
 		for (int x = 0; x < gridWidth; x++) {
 			for (int y = 0; y < gridHeight; y++) {
-				grid.get(x).get(y).updateDisplay();
+				grid.get(x).get(y).update();
 			}
 		}
+	}
+
+	public List<String> export() {
+		List<String> gridExport = new ArrayList<String>(gridWidth * gridHeight);
+		for (int x = 0; x < gridWidth; x++) {
+			for (int y = 0; y < gridHeight; y++) {
+				gridExport.add(grid.get(x).get(y).export());
+			}
+		}
+		return gridExport;
 	}
 }

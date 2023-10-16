@@ -74,14 +74,14 @@ public class Referee extends AbstractReferee {
 
 
 	private void drawGrid() {
-		for(int x = 0; x < 5; x++) {
-			for(int y = 0; y < 12; y++) {
-				int srcX = x * 150 + 248;
-				int srcY = y * 150 + 64;
+		for(int x = 0; x < 12; x++) {
+			for(int y = 0; y < 5; y++) {
+				int srcX = x * 150 + 64;
+				int srcY = y * 150 + 248;
 				Sprite computer = graphicEntityModule.createSprite()
 					.setImage("computer.png")
-					.setX(srcY)
-					.setY(srcX)
+					.setX(srcX)
+					.setY(srcY)
 					.setAnchor(0);
 				tooltips.setTooltipText(computer, "Computer " + x + ";" + y);
 			}

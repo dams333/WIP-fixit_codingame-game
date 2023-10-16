@@ -1,4 +1,10 @@
 package com.codingame.game;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.codingame.game.commands.Command;
+import com.codingame.game.commands.InvalidCommandException;
+import com.codingame.game.commands.MoveCommand;
 import com.codingame.gameengine.core.AbstractMultiplayerPlayer;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.entities.Group;
@@ -54,5 +60,43 @@ public class Player extends AbstractMultiplayerPlayer {
 
 	public void updateHud() {
 		creditsText.setText("" + getCredits());
+	}
+
+	public List<Command> parse(String input, Grid grid) throws InvalidCommandException {
+		List<Command> commands = new ArrayList<>();
+
+		String[] cmds = input.split(";");
+		if (cmds.length == 0) {
+			throw new InvalidCommandException("No command");
+		}
+		for (String cmd : cmds) {
+			String[] args = cmd.split(" ");
+			if (args.length == 0) {
+				throw new InvalidCommandException("Empty command");
+			}
+			if (args[0].equals("MOVE")) {
+				if (args.length != 4) {
+					throw new InvalidCommandException("Bad usage: MOVE <id> <x> <y>");
+				}
+				try {
+					int id = Integer.parseInt(args[1]);
+					int x = Integer.parseInt(args[2]);
+					int y = Integer.parseInt(args[3]);
+					if (!grid.isPlayerFixer(id, getIndex())) {
+						throw new InvalidCommandException("You can't move the fixer " + id);
+					}
+					if (!grid.isValidPosition(x, y)) {
+						throw new InvalidCommandException("Invalid position (" + x + ", " + y + ")");
+					}
+					commands.add(new MoveCommand(id, x, y));
+				} catch (NumberFormatException e) {
+					throw new InvalidCommandException("Bad usage: MOVE <id> <x> <y>");
+				}
+			} else {
+				throw new InvalidCommandException("Unknown command '" + args[0] + "'");
+			}
+		}
+
+		return commands;
 	}
 }

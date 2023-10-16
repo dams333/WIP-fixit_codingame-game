@@ -69,6 +69,7 @@ public class Cell {
 	}
 
 	private void updateDisplay() {
+		graphicEntityModule.commitEntityState(0.7, bugCircle);
 		if (bugLevel > 0) {
 			bugCircle.setAlpha(0.5);
 			switch (bugLevel) {
@@ -86,6 +87,7 @@ public class Cell {
 			bugCircle.setAlpha(0);
 		}
 		this.updateToolTip();
+		graphicEntityModule.commitEntityState(1, bugCircle);
 	}
 
 	private void updateToolTip() {

@@ -1,8 +1,10 @@
 package com.codingame.game;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import com.codingame.gameengine.core.AbstractPlayer.TimeoutException;
+import com.codingame.game.commands.Command;
 import com.codingame.gameengine.core.AbstractReferee;
 import com.codingame.gameengine.core.GameManager;
 import com.codingame.gameengine.core.MultiplayerGameManager;
@@ -24,13 +26,14 @@ public class Referee extends AbstractReferee {
 		grid = gridProvider.get();
 
 		gameManager.setMaxTurns(20);
+		gameManager.setFrameDuration(2000);
 
         drawBackground();
 		for (Player player : gameManager.getPlayers()) {
             int x = player.getIndex() == 0 ? 0 : 1920 - 600;
 			player.initHud(x);
         }
-		grid.initGrid(random);
+		grid.initGrid(random, gameManager);
     }
 
 	private void drawBackground() {
@@ -62,14 +65,22 @@ public class Referee extends AbstractReferee {
 				if (outputs.size() != 1)
 					player.deactivate(String.format("$%d outputs (1 required)!", outputs.size()));
 				else {
-
+					List<Command> commands = player.parse(outputs.get(0), grid);
+					for (Command command : commands) {
+						command.execute(player.getNicknameToken(), grid, gameManager);
+					}
 				}
             } catch (TimeoutException e) {
 				gameManager.addToGameSummary(GameManager.formatErrorMessage(player.getNicknameToken() + " timeout!"));
                 player.deactivate(String.format("$%d timeout!", player.getIndex()));
 				player.setScore(-1);
             	endGame();
-            }
+            } catch (Exception e) {
+				gameManager.addToGameSummary(GameManager.formatErrorMessage(player.getNicknameToken() + " eliminated: " + e.getMessage()));
+				player.deactivate(String.format("$%d invalid input!", player.getIndex()));
+				player.setScore(-1);
+				endGame();
+			}
         }
 
 		grid.update();

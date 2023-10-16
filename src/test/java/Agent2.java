@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class Agent2 {
@@ -12,7 +13,9 @@ public class Agent2 {
 				String line = scanner.nextLine();
 			}
 
-			System.out.println("0 0");
+			Random random = new Random();
+
+			System.out.println("MOVE 1 " + random.nextInt(11) + " " + random.nextInt(4));
         }
 
     }

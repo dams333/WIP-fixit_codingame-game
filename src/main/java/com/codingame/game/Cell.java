@@ -1,5 +1,8 @@
 package com.codingame.game;
 
+import java.util.Random;
+
+import com.codingame.gameengine.module.entities.Circle;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.entities.Group;
 import com.codingame.gameengine.module.entities.Sprite;
@@ -13,6 +16,8 @@ public class Cell {
 	private int y;
 
 	private Group displayGroup;
+	private Circle bugCircle;
+	private int bugLevel = 0;
 
 	public Cell(int x, int y, GraphicEntityModule graphicEntityModule, TooltipModule tooltips) {
 		this.graphicEntityModule = graphicEntityModule;
@@ -25,17 +30,44 @@ public class Cell {
 			.setImage("computer.png")
 			.setX(srcX)
 			.setY(srcY)
-			.setAnchor(0);
-		displayGroup = graphicEntityModule.createGroup(computerSprite);
-		this.updateToolTip();
+			.setAnchor(0)
+			.setZIndex(1);
+		bugCircle = graphicEntityModule.createCircle()
+			.setX(srcX + 150/2)
+			.setY(srcY + 150/2)
+			.setRadius(150/2 - 20)
+			.setFillColor(0x000000)
+			.setAlpha(0)
+			.setZIndex(2);
+		displayGroup = graphicEntityModule.createGroup(computerSprite, bugCircle);
+		this.updateDisplay();
 	}
 
 	public void updateDisplay() {
-
+		if (bugLevel > 0) {
+			bugCircle.setAlpha(0.5);
+			switch (bugLevel) {
+				case 1:
+					bugCircle.setFillColor(0x00FF00);
+					break;
+				case 2:
+					bugCircle.setFillColor(0xFFFF00);
+					break;
+				case 3:
+					bugCircle.setFillColor(0xFF0000);
+					break;
+			}
+		} else {
+			bugCircle.setAlpha(0);
+		}
+		this.updateToolTip();
 	}
 
 	private void updateToolTip() {
-		tooltips.setTooltipText(displayGroup, "Computer " + x + ";" + y);
+		String tooltipText = "Computer " + x + ";" + y;
+		if (bugLevel > 0)
+			tooltipText += "\nBug level: " + bugLevel;
+		tooltips.setTooltipText(displayGroup, tooltipText);
 	}
 
 	@Override

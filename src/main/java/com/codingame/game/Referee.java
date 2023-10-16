@@ -30,7 +30,7 @@ public class Referee extends AbstractReferee {
             int x = player.getIndex() == 0 ? 0 : 1920 - 600;
 			player.initHud(x);
         }
-		grid.initGrid();
+		grid.initGrid(random);
     }
 
 	private void drawBackground() {

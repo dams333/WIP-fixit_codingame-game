@@ -7,29 +7,30 @@ import com.codingame.gameengine.core.AbstractReferee;
 import com.codingame.gameengine.core.GameManager;
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
-import com.codingame.gameengine.module.entities.Group;
-import com.codingame.gameengine.module.entities.Line;
-import com.codingame.gameengine.module.entities.Sprite;
-import com.codingame.gameengine.module.entities.Text;
-import com.codingame.gameengine.module.tooltip.TooltipModule;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 public class Referee extends AbstractReferee {
     @Inject private MultiplayerGameManager<Player> gameManager;
     @Inject private GraphicEntityModule graphicEntityModule;
-	@Inject TooltipModule tooltips;
+	@Inject private Provider<Grid> gridProvider;
 
 	private Random random;
+	private Grid grid;
 
     @Override
     public void init() {
 		random = new Random(gameManager.getSeed());
+		grid = gridProvider.get();
 
 		gameManager.setMaxTurns(20);
 
         drawBackground();
-		drawHud();
-		drawGrid();
+		for (Player player : gameManager.getPlayers()) {
+            int x = player.getIndex() == 0 ? 0 : 1920 - 600;
+			player.initHud(x);
+        }
+		grid.initGrid();
     }
 
 	private void drawBackground() {
@@ -40,53 +41,9 @@ public class Referee extends AbstractReferee {
 
 	private void drawHud() {
         for (Player player : gameManager.getPlayers()) {
-            int x = player.getIndex() == 0 ? 0 : 1920 - 600;
-
-
-            Text name = graphicEntityModule.createText(player.getNicknameToken())
-                    .setX(x + 370)
-                    .setY(25)
-                    .setZIndex(20)
-                    .setFontSize(30)
-                    .setFillColor(0xffffff)
-                    .setAnchor(0.5);
-
-			Text credit = graphicEntityModule.createText("" + player.getCredits())
-                    .setX(x + 240)
-                    .setY(90)
-                    .setZIndex(20)
-                    .setFontSize(30)
-                    .setFillColor(0xffffff)
-                    .setAnchor(0);
-
-            Sprite avatar = graphicEntityModule.createSprite()
-                    .setX(x)
-                    .setY(0)
-                    .setZIndex(20)
-                    .setImage(player.getAvatarToken())
-                    .setAnchor(0)
-                    .setBaseHeight(130)
-                    .setBaseWidth(130);
-
-            player.hud = graphicEntityModule.createGroup(name, credit, avatar);
+            player.updateHud();
         }
     }
-
-
-	private void drawGrid() {
-		for(int x = 0; x < 12; x++) {
-			for(int y = 0; y < 5; y++) {
-				int srcX = x * 150 + 64;
-				int srcY = y * 150 + 248;
-				Sprite computer = graphicEntityModule.createSprite()
-					.setImage("computer.png")
-					.setX(srcX)
-					.setY(srcY)
-					.setAnchor(0);
-				tooltips.setTooltipText(computer, "Computer " + x + ";" + y);
-			}
-		}
-	}
 
     @Override
     public void gameTurn(int turn) {
@@ -108,7 +65,10 @@ public class Referee extends AbstractReferee {
 				player.setScore(-1);
             	endGame();
             }
-        }        
+        }
+
+		grid.updateGrid();
+		drawHud();
     }
 
 	private void endGame() {

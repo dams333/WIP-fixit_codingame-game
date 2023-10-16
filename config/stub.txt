@@ -1,4 +1,18 @@
-gameloop
-read str:string(1000)
+read mapWidth:int
+read mapHeight:int
 
-write output
+gameloop
+read caseCount:int
+loop caseCount read x:int y:int bugLevel:int
+
+read fixerCount:int
+loop fixerCount read id:int x:int y:int owner:int
+
+write cmd1; cmd2
+
+INPUT
+bugLevel: 0 = no bug / 1,2,3 = bug level on the case
+owner: 1 = you / -1 = opponent
+
+OUTPUT
+MOVE <id> <x> <y>

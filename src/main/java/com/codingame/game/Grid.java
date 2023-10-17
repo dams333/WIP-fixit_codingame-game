@@ -1,9 +1,12 @@
 package com.codingame.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
+import com.codingame.gameengine.core.GameManager;
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.tooltip.TooltipModule;
@@ -21,6 +24,8 @@ public class Grid {
 
 	private Random random;
 	private MultiplayerGameManager<Player> gameManager;
+
+	private int toSpawnBug = 0;
 
 	public void initGrid(Random random, MultiplayerGameManager<Player> gameManager) {
 		this.gameManager = gameManager;
@@ -40,8 +45,33 @@ public class Grid {
 	}
 
 	public void update() {
-		int cell = random.nextInt(gridWidth * gridHeight);
-		grid.get(cell % gridWidth).get(cell / gridWidth).spawnBug();
+		Map<Player, Integer> pay = new HashMap<Player, Integer>();
+		for (Fixer fixer : fixers) {
+			grid.get(fixer.getX()).get(fixer.getY()).fix(fixer, gameManager);
+			Player p = gameManager.getPlayers().get(fixer.getPlayerIndex());
+			if (!pay.containsKey(p)) {
+				pay.put(p, 0);
+			}
+			pay.put(p, pay.get(p) + 1);
+		}
+		for (Player p : pay.keySet()) {
+			p.setScore(p.getScore() - pay.get(p));
+			if (p.getScore() <= 0) {
+				p.setScore(0);
+				gameManager.addToGameSummary(GameManager.formatErrorMessage(p.getNicknameToken() + " needs to pay they fixers " + pay.get(p) + " credits. But has only " + p.getScore() + " credits!"));
+				p.deactivate(String.format("%s is in bankruptcy!", p.getNicknameToken()));
+				gameManager.endGame();
+			} else {
+				gameManager.addToGameSummary(p.getNicknameToken() + " payed they fixers " + pay.get(p) + " credits!");
+			}
+		}
+
+		if (toSpawnBug == 0) {
+			int cell = random.nextInt(gridWidth * gridHeight);
+			grid.get(cell % gridWidth).get(cell / gridWidth).spawnBug();
+			toSpawnBug = random.nextInt(3) + 1;
+		}
+		toSpawnBug--;
 
 		for (int x = 0; x < gridWidth; x++) {
 			for (int y = 0; y < gridHeight; y++) {

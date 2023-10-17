@@ -2,6 +2,7 @@ package com.codingame.game;
 
 import java.util.Random;
 
+import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.entities.Circle;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.entities.Group;
@@ -18,6 +19,7 @@ public class Cell {
 	private Group displayGroup;
 	private Circle bugCircle;
 	private int bugLevel = 0;
+	private int originalBugLevel = 0;
 	private Random random;
 
 	private int turnToUpgradeBug = 0;
@@ -44,13 +46,14 @@ public class Cell {
 			.setAlpha(0)
 			.setZIndex(2);
 		displayGroup = graphicEntityModule.createGroup(computerSprite, bugCircle);
-		this.updateDisplay();
+		this.updateDisplay(0, 0);
 	}
 
 	public void spawnBug() {
 		if (bugLevel == 0) {
-			bugLevel = 1;
-			turnToUpgradeBug = random.nextInt(3) + 2;
+			bugLevel = random.nextInt(3) + 1;
+			originalBugLevel = bugLevel;
+			turnToUpgradeBug = random.nextInt(10) + 10;
 		}
 	}
 
@@ -65,11 +68,11 @@ public class Cell {
 			}
 		}
 
-		this.updateDisplay();
+		this.updateDisplay(0.7, 1);
 	}
 
-	private void updateDisplay() {
-		graphicEntityModule.commitEntityState(0.7, bugCircle);
+	private void updateDisplay(double before, double after) {
+		graphicEntityModule.commitEntityState(before, bugCircle);
 		if (bugLevel > 0) {
 			bugCircle.setAlpha(0.5);
 			switch (bugLevel) {
@@ -87,13 +90,16 @@ public class Cell {
 			bugCircle.setAlpha(0);
 		}
 		this.updateToolTip();
-		graphicEntityModule.commitEntityState(1, bugCircle);
+		graphicEntityModule.commitEntityState(after, bugCircle);
 	}
 
 	private void updateToolTip() {
 		String tooltipText = "Computer " + x + ";" + y;
-		if (bugLevel > 0)
+		if (bugLevel > 0) {
 			tooltipText += "\nBug level: " + bugLevel;
+			tooltipText += "\nTurns to upgrade: " + turnToUpgradeBug;
+			tooltipText += "\nOriginal level: " + originalBugLevel;
+		}
 		tooltips.setTooltipText(displayGroup, tooltipText);
 	}
 
@@ -108,5 +114,23 @@ public class Cell {
 
 	public String export() {
 		return String.format("%d %d %d", x, y, bugLevel);
+	}
+
+	public void fix(Fixer fixer, MultiplayerGameManager<Player> gameManager) {
+		if (bugLevel > 0) {
+			bugLevel--;
+			if (bugLevel == 0) {
+				turnToUpgradeBug = 0;
+			}
+			this.updateDisplay(0.4, 0.6);
+			Player p = gameManager.getPlayers().get(fixer.getPlayerIndex());
+			if (bugLevel != 0)
+				gameManager.addToGameSummary(p.getNicknameToken() + " worked on a bug at (" + x + ";" + y + "). It's now level " + bugLevel + "!");
+			else {
+				int won = originalBugLevel * 5;
+				gameManager.addToGameSummary(p.getNicknameToken() + " fixed a bug at (" + x + ";" + y + "). He won " + won + " credits!");
+				p.setScore(p.getScore() + won);
+			}
+		}
 	}
 }

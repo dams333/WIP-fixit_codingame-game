@@ -17,19 +17,14 @@ public class Player extends AbstractMultiplayerPlayer {
 
 	public Group hud;
 	Text creditsText;
-
-	private int credits = 100;
 	
     @Override
     public int getExpectedOutputLines() {
         return 1;
     }
 
-	public int getCredits() {
-		return credits;
-	}
-
 	public void initHud(int x) {
+		setScore(100);
 		Text name = graphicEntityModule.createText(getNicknameToken())
                     .setX(x + 370)
                     .setY(25)
@@ -38,7 +33,7 @@ public class Player extends AbstractMultiplayerPlayer {
                     .setFillColor(0xffffff)
                     .setAnchor(0.5);
 
-		creditsText = graphicEntityModule.createText("" + getCredits())
+		creditsText = graphicEntityModule.createText("" + getScore())
                     .setX(x + 240)
                     .setY(90)
                     .setZIndex(20)
@@ -59,7 +54,7 @@ public class Player extends AbstractMultiplayerPlayer {
 	}
 
 	public void updateHud() {
-		creditsText.setText("" + getCredits());
+		creditsText.setText("" + getScore());
 	}
 
 	public List<Command> parse(String input, Grid grid) throws InvalidCommandException {

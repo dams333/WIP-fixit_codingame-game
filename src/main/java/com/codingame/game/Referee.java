@@ -25,7 +25,7 @@ public class Referee extends AbstractReferee {
 		random = new Random(gameManager.getSeed());
 		grid = gridProvider.get();
 
-		gameManager.setMaxTurns(20);
+		gameManager.setMaxTurns(200);
 		gameManager.setFrameDuration(2000);
 
         drawBackground();
@@ -68,6 +68,7 @@ public class Referee extends AbstractReferee {
             player.execute();
         }
 
+		boolean isEnded = false;
         for (Player player : gameManager.getActivePlayers()) {
             try {
                 List<String> outputs = player.getOutputs();
@@ -81,22 +82,38 @@ public class Referee extends AbstractReferee {
 				}
             } catch (TimeoutException e) {
 				gameManager.addToGameSummary(GameManager.formatErrorMessage(player.getNicknameToken() + " timeout!"));
-                player.deactivate(String.format("$%d timeout!", player.getIndex()));
+                player.deactivate(String.format("%s timeout!", player.getNicknameToken()));
 				player.setScore(-1);
-            	endGame();
+            	gameManager.endGame();
+				isEnded = true;
+				continue;
             } catch (Exception e) {
 				gameManager.addToGameSummary(GameManager.formatErrorMessage(player.getNicknameToken() + " eliminated: " + e.getMessage()));
-				player.deactivate(String.format("$%d invalid input!", player.getIndex()));
+				player.deactivate(String.format("%s invalid input!", player.getNicknameToken()));
 				player.setScore(-1);
-				endGame();
+				gameManager.endGame();
+				isEnded = true;
+				continue;
 			}
         }
+		if (isEnded)
+			return;
 
 		grid.update();
 		drawHud();
-    }
 
-	private void endGame() {
-        gameManager.endGame();
-	}
+		if (turn == 200) {
+			gameManager.addToGameSummary("After 200 turns, " + gameManager.getPlayers().get(0).getNicknameToken() + " has " + gameManager.getPlayers().get(0).getScore() + " credits and " + gameManager.getPlayers().get(1).getNicknameToken() + " has " + gameManager.getPlayers().get(1).getScore() + " credits.");
+			if (gameManager.getPlayers().get(0).getScore() > gameManager.getPlayers().get(1).getScore()) {
+				gameManager.addToGameSummary(GameManager.formatSuccessMessage(gameManager.getPlayers().get(0).getNicknameToken() + " won!"));
+				gameManager.getPlayers().get(1).deactivate(gameManager.getPlayers().get(1).getNicknameToken() + " has less credits!");
+			} else if (gameManager.getPlayers().get(0).getScore() < gameManager.getPlayers().get(1).getScore()) {
+				gameManager.addToGameSummary(GameManager.formatSuccessMessage(gameManager.getPlayers().get(1).getNicknameToken() + " won!"));
+				gameManager.getPlayers().get(0).deactivate(gameManager.getPlayers().get(0).getNicknameToken() + " has less credits!");
+			} else {
+				gameManager.addToGameSummary(GameManager.formatSuccessMessage("It's a draw!"));
+			}
+			gameManager.endGame();
+		}
+    }
 }

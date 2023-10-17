@@ -68,4 +68,11 @@ public class Fixer {
 	public String export(int playerIndex) {
 		return String.format("%d %d %d %d", id, x, y, playerIndex == ownerIndex ? 1 : -1);
 	}
+
+	public int getX() {
+		return x;
+	}
+	public int getY() {
+		return y;
+	}
 }

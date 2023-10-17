@@ -60,7 +60,7 @@ public class Grid {
 			if (p.getScore() <= 0) {
 				p.setScore(0);
 				gameManager.addToGameSummary(GameManager.formatErrorMessage(p.getNicknameToken() + " needs to pay they fixers " + pay.get(p) + " credits. But has only " + p.getScore() + " credits!"));
-				p.deactivate(String.format("%s is in bankruptcy!", p.getNicknameToken()));
+				gameManager.addTooltip(p, p.getNicknameToken() + " is in bankruptcy!");
 				gameManager.endGame();
 				isEnded = true;
 			} else {

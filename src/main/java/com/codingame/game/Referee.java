@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.codingame.gameengine.core.AbstractPlayer.TimeoutException;
 import com.codingame.game.commands.Command;
+import com.codingame.game.commands.InvalidCommandException;
 import com.codingame.gameengine.core.AbstractReferee;
 import com.codingame.gameengine.core.GameManager;
 import com.codingame.gameengine.core.MultiplayerGameManager;
@@ -73,7 +74,7 @@ public class Referee extends AbstractReferee {
             try {
                 List<String> outputs = player.getOutputs();
 				if (outputs.size() != 1)
-					player.deactivate(String.format("$%d outputs (1 required)!", outputs.size()));
+					gameManager.addTooltip(player, player.getNicknameToken() + " bad commands!");
 				else {
 					List<Command> commands = player.parse(outputs.get(0), grid);
 					for (Command command : commands) {
@@ -82,14 +83,14 @@ public class Referee extends AbstractReferee {
 				}
             } catch (TimeoutException e) {
 				gameManager.addToGameSummary(GameManager.formatErrorMessage(player.getNicknameToken() + " timeout!"));
-                player.deactivate(String.format("%s timeout!", player.getNicknameToken()));
+				gameManager.addTooltip(player, player.getNicknameToken() + " timeout!");
 				player.setScore(-1);
             	gameManager.endGame();
 				isEnded = true;
 				continue;
-            } catch (Exception e) {
+            } catch (InvalidCommandException e) {
 				gameManager.addToGameSummary(GameManager.formatErrorMessage(player.getNicknameToken() + " eliminated: " + e.getMessage()));
-				player.deactivate(String.format("%s invalid input!", player.getNicknameToken()));
+				gameManager.addTooltip(player, player.getNicknameToken() + " bad commands!");
 				player.setScore(-1);
 				gameManager.endGame();
 				isEnded = true;
@@ -108,11 +109,13 @@ public class Referee extends AbstractReferee {
 		if (turn == 200) {
 			gameManager.addToGameSummary("After 200 turns, " + gameManager.getPlayers().get(0).getNicknameToken() + " has " + gameManager.getPlayers().get(0).getScore() + " credits and " + gameManager.getPlayers().get(1).getNicknameToken() + " has " + gameManager.getPlayers().get(1).getScore() + " credits.");
 			if (gameManager.getPlayers().get(0).getScore() > gameManager.getPlayers().get(1).getScore()) {
-				gameManager.addToGameSummary(GameManager.formatSuccessMessage(gameManager.getPlayers().get(0).getNicknameToken() + " won!"));
-				gameManager.addTooltip(gameManager.getPlayers().get(0), gameManager.getPlayers().get(0).getNicknameToken() + " won!");
+				Player winner = gameManager.getPlayers().get(0);
+				gameManager.addToGameSummary(GameManager.formatSuccessMessage(winner.getNicknameToken() + " won!"));
+				gameManager.addTooltip(winner, winner.getNicknameToken() + " won!");
 			} else if (gameManager.getPlayers().get(0).getScore() < gameManager.getPlayers().get(1).getScore()) {
-				gameManager.addToGameSummary(GameManager.formatSuccessMessage(gameManager.getPlayers().get(1).getNicknameToken() + " won!"));
-				gameManager.addTooltip(gameManager.getPlayers().get(1), gameManager.getPlayers().get(1).getNicknameToken() + " won!");
+				Player winner = gameManager.getPlayers().get(1);
+				gameManager.addToGameSummary(GameManager.formatSuccessMessage(winner.getNicknameToken() + " won!"));
+				gameManager.addTooltip(winner, winner.getNicknameToken() + " won!");
 			} else {
 				gameManager.addToGameSummary(GameManager.formatSuccessMessage("It's a draw!"));
 			}

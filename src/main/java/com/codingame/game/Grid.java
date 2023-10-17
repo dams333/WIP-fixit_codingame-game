@@ -44,7 +44,7 @@ public class Grid {
 		}
 	}
 
-	public void update() {
+	public boolean update() {
 		Map<Player, Integer> pay = new HashMap<Player, Integer>();
 		for (Fixer fixer : fixers) {
 			grid.get(fixer.getX()).get(fixer.getY()).fix(fixer, gameManager);
@@ -54,6 +54,7 @@ public class Grid {
 			}
 			pay.put(p, pay.get(p) + 1);
 		}
+		boolean isEnded = false;
 		for (Player p : pay.keySet()) {
 			p.setScore(p.getScore() - pay.get(p));
 			if (p.getScore() <= 0) {
@@ -61,6 +62,7 @@ public class Grid {
 				gameManager.addToGameSummary(GameManager.formatErrorMessage(p.getNicknameToken() + " needs to pay they fixers " + pay.get(p) + " credits. But has only " + p.getScore() + " credits!"));
 				p.deactivate(String.format("%s is in bankruptcy!", p.getNicknameToken()));
 				gameManager.endGame();
+				isEnded = true;
 			} else {
 				gameManager.addToGameSummary(p.getNicknameToken() + " payed they fixers " + pay.get(p) + " credits!");
 			}
@@ -78,6 +80,7 @@ public class Grid {
 				grid.get(x).get(y).update();
 			}
 		}
+		return isEnded;
 	}
 
 	public List<String> export() {

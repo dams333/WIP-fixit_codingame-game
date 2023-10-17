@@ -99,8 +99,11 @@ public class Referee extends AbstractReferee {
 		if (isEnded)
 			return;
 
-		grid.update();
+		isEnded = grid.update();
 		drawHud();
+
+		if (isEnded)
+			return;
 
 		if (turn == 200) {
 			gameManager.addToGameSummary("After 200 turns, " + gameManager.getPlayers().get(0).getNicknameToken() + " has " + gameManager.getPlayers().get(0).getScore() + " credits and " + gameManager.getPlayers().get(1).getNicknameToken() + " has " + gameManager.getPlayers().get(1).getScore() + " credits.");

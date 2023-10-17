@@ -109,10 +109,10 @@ public class Referee extends AbstractReferee {
 			gameManager.addToGameSummary("After 200 turns, " + gameManager.getPlayers().get(0).getNicknameToken() + " has " + gameManager.getPlayers().get(0).getScore() + " credits and " + gameManager.getPlayers().get(1).getNicknameToken() + " has " + gameManager.getPlayers().get(1).getScore() + " credits.");
 			if (gameManager.getPlayers().get(0).getScore() > gameManager.getPlayers().get(1).getScore()) {
 				gameManager.addToGameSummary(GameManager.formatSuccessMessage(gameManager.getPlayers().get(0).getNicknameToken() + " won!"));
-				gameManager.getPlayers().get(1).deactivate(gameManager.getPlayers().get(1).getNicknameToken() + " has less credits!");
+				gameManager.addTooltip(gameManager.getPlayers().get(0), gameManager.getPlayers().get(0).getNicknameToken() + " won!");
 			} else if (gameManager.getPlayers().get(0).getScore() < gameManager.getPlayers().get(1).getScore()) {
 				gameManager.addToGameSummary(GameManager.formatSuccessMessage(gameManager.getPlayers().get(1).getNicknameToken() + " won!"));
-				gameManager.getPlayers().get(0).deactivate(gameManager.getPlayers().get(0).getNicknameToken() + " has less credits!");
+				gameManager.addTooltip(gameManager.getPlayers().get(1), gameManager.getPlayers().get(1).getNicknameToken() + " won!");
 			} else {
 				gameManager.addToGameSummary(GameManager.formatSuccessMessage("It's a draw!"));
 			}

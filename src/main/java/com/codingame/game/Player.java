@@ -5,6 +5,7 @@ import java.util.List;
 import com.codingame.game.commands.Command;
 import com.codingame.game.commands.InvalidCommandException;
 import com.codingame.game.commands.MoveCommand;
+import com.codingame.game.commands.WaitCommand;
 import com.codingame.gameengine.core.AbstractMultiplayerPlayer;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
 import com.codingame.gameengine.module.entities.Group;
@@ -69,7 +70,12 @@ public class Player extends AbstractMultiplayerPlayer {
 			if (args.length == 0) {
 				throw new InvalidCommandException("Empty command");
 			}
-			if (args[0].equals("MOVE")) {
+			if (args[0].equals("WAIT")) {
+				if (args.length != 1) {
+					throw new InvalidCommandException("Bad usage: WAIT");
+				}
+				commands.add(new WaitCommand());
+			} else if (args[0].equals("MOVE")) {
 				if (args.length != 4) {
 					throw new InvalidCommandException("Bad usage: MOVE <id> <x> <y>");
 				}

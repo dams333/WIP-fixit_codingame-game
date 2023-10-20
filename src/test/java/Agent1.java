@@ -49,12 +49,11 @@ class Agent1 {
             // Write an answer using System.out.println()
             // To debug: System.err.println("Debug messages...");
 
-			int x = 0;
-            int y = 0;
             if (grid.get(myFixerX).get(myFixerY) > 0) {
-                x = myFixerX;
-                y = myFixerY;
+                System.out.println("WAIT");
             } else {
+				int x = 0;
+            	int y = 0;
                 for (int i = 0; i < mapWidth; i++) {
                     for (int j = 0; j < mapHeight; j++) {
                         if (grid.get(i).get(j) == bugMax) {
@@ -63,8 +62,8 @@ class Agent1 {
                         }
                     }
                 }
+				System.out.println("MOVE " + myFixerId + " " + x + " " + y); // MOVE <id> <x> <y>
             }
-            System.out.println("MOVE " + myFixerId + " " + x + " " + y); // MOVE <id> <x> <y>
         }
     }
 }

@@ -129,4 +129,13 @@ public class Grid {
 		}
 		return fixersExport;
 	}
+
+	public boolean isPlayerFixerAtPos(int x, int y, int playerIndex) {
+		for (Fixer fixer : fixers) {
+			if (fixer.getPlayerIndex() == playerIndex && fixer.getX() == x && fixer.getY() == y) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

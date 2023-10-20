@@ -78,7 +78,7 @@ public class Referee extends AbstractReferee {
 				else {
 					List<Command> commands = player.parse(outputs.get(0), grid);
 					for (Command command : commands) {
-						command.execute(player.getNicknameToken(), grid, gameManager);
+						command.execute(player, grid, gameManager);
 					}
 				}
             } catch (TimeoutException e) {

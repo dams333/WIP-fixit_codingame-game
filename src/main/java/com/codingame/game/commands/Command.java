@@ -11,5 +11,5 @@ public class Command {
 		return type;
 	}
 
-	public void execute(String playerName, Grid grid, MultiplayerGameManager<Player> gameManager) {}
+	public void execute(Player p, Grid grid, MultiplayerGameManager<Player> gameManager) {}
 }

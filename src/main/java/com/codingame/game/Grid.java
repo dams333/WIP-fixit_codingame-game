@@ -56,14 +56,14 @@ public class Grid {
 		}
 		boolean isEnded = false;
 		for (Player p : pay.keySet()) {
-			p.setScore(p.getScore() - pay.get(p));
-			if (p.getScore() <= 0) {
-				p.setScore(0);
+			if (p.getScore() < pay.get(p)) {
 				gameManager.addToGameSummary(GameManager.formatErrorMessage(p.getNicknameToken() + " needs to pay they fixers " + pay.get(p) + " credits. But has only " + p.getScore() + " credits!"));
 				gameManager.addTooltip(p, p.getNicknameToken() + " is in bankruptcy!");
+				p.setScore(0);
 				gameManager.endGame();
 				isEnded = true;
 			} else {
+				p.setScore(p.getScore() - pay.get(p));
 				gameManager.addToGameSummary(p.getNicknameToken() + " payed they fixers " + pay.get(p) + " credits!");
 			}
 		}
@@ -137,5 +137,9 @@ public class Grid {
 			}
 		}
 		return false;
+	}
+
+	public void hireFixer(Player p, int x, int y) {
+		fixers.add(new Fixer(x, y, p.getIndex(), graphicEntityModule, tooltips));
 	}
 }

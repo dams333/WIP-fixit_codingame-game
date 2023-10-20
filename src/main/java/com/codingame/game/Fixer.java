@@ -29,14 +29,14 @@ public class Fixer {
 			.setAnchor(0)
 			.setZIndex(3);
 		tooltips.setTooltipText(sprite, "Fixer " + id);
-		this.update();
+		this.update(0, 0);
 	}
 
-	public void update() {
-		graphicEntityModule.commitEntityState(0, sprite);
+	public void update(double first, double last) {
+		graphicEntityModule.commitEntityState(first, sprite);
 		sprite.setX(x * 150 + 64 + (ownerIndex == 0 ? 10 : 150 - 64 - 10));
 		sprite.setY(y * 150 + 248 + 10);
-		graphicEntityModule.commitEntityState(0.3, sprite);
+		graphicEntityModule.commitEntityState(last, sprite);
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class Fixer {
 	public void move(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.update();
+		this.update(0, 0.3);
 	}
 
 	public String export(int playerIndex) {

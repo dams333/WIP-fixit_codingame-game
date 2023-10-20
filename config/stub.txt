@@ -15,4 +15,4 @@ bugLevel: 0 = no bug / 1,2,3 = bug level on the case
 owner: 1 = you / -1 = opponent
 
 OUTPUT
-WAIT | MOVE <id> <x> <y>
+WAIT | MOVE <id> <x> <y> | HIRE <x> <y> | FIRE <id>

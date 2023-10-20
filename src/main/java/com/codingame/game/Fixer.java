@@ -75,4 +75,11 @@ public class Fixer {
 	public int getY() {
 		return y;
 	}
+
+	public void fire() {
+		sprite.setAlpha(1);
+		graphicEntityModule.commitEntityState(0, sprite);
+		sprite.setAlpha(0);
+		graphicEntityModule.commitEntityState(0.2, sprite);
+	}
 }

@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.codingame.game.commands.Command;
+import com.codingame.game.commands.FireCommand;
 import com.codingame.game.commands.HireCommand;
 import com.codingame.game.commands.InvalidCommandException;
 import com.codingame.game.commands.MoveCommand;
@@ -107,6 +108,19 @@ public class Player extends AbstractMultiplayerPlayer {
 					commands.add(new HireCommand(x, y));
 				} catch (NumberFormatException e) {
 					throw new InvalidCommandException("Bad usage: HIRE <x> <y>");
+				}
+			} else if (args[0].equals("FIRE")) {
+				if (args.length != 2) {
+					throw new InvalidCommandException("Bad usage: FIRE <id>");
+				}
+				try {
+					int id = Integer.parseInt(args[1]);
+					if (!grid.isPlayerFixer(id, getIndex())) {
+						throw new InvalidCommandException("You can't move the fixer " + id);
+					}
+					commands.add(new FireCommand(id));
+				} catch (NumberFormatException e) {
+					throw new InvalidCommandException("Bad usage: FIRE <id>");
 				}
 			} else {
 				throw new InvalidCommandException("Unknown command '" + args[0] + "'");

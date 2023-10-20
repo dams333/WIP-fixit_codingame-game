@@ -142,4 +142,14 @@ public class Grid {
 	public void hireFixer(Player p, int x, int y) {
 		fixers.add(new Fixer(x, y, p.getIndex(), graphicEntityModule, tooltips));
 	}
+
+	public void fireFixer(int id) {
+		for (Fixer fixer : fixers) {
+			if (fixer.getId() == id) {
+				fixer.fire();
+				fixers.remove(fixer);
+				return;
+			}
+		}
+	}
 }

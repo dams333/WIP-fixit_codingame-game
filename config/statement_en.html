@@ -1,5 +1,18 @@
 <div id="statement_back" class="statement_back" style="display:none"></div>
 <div class="statement-body">
+  <div class="statement-lose-conditions">
+      <div class="blk">
+        <div class="title">DEV WARNING</div>
+        <div class="text">
+          <ul>
+            <li>The precise rules of the game are still being worked out. So don't hesitate to send us your feedback on the game's balancing and possibilities.</li>
+            <li>New features and rule changes will be introduced in the higher leagues. For now, the game is as it will be in the wood league.</li>
+			<li>All sprites and graphics will be cleanly redesigned.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  <br>
   <!-- GOAL -->
   <div class="statement-section statement-goal">
     <h1>
@@ -7,10 +20,7 @@
       <span>The Goal</span>
     </h1>
     <div class="statement-goal-content">
-      The aim of this game is to win.
-      <br>
-      <br>
-      For this question, you will be asked to output a single line as a solution.
+      Fix the bugs and earn more money than your opponent.
     </div>
   </div>
   <!-- RULES -->
@@ -20,26 +30,71 @@
       <span>Rules</span>
     </h1>
     <div>
-      <div class="statement-rules-content">Your program receives characters.<br>
-        Your actions have an effect.<br>
+      <div class="statement-rules-content">
+        The game is played on a computer park consisting of 12x5 computers. You are in competition with another manager for the maintenance of the park.
         <br>
-        The game zone works as follows:
-        <ul>
-          <li>There are coordinates.</li>
-        </ul>
         <br>
-        The units work as follows:
+        Throughout the game, bugs will appear and evolve. Your goal will be to manage your Fixers team in order to earn more money than your opponent.
+        <br>
+        Beware, each Fixer will cost you money. You must therefore avoid losing too many credits.
+        <br>
+        <br>
+        <h2>Fixers</h2>
+        Your Fixers are autonomous. All you have to do is tell them and they will automatically act on the computer to which they are assigned.
+        <br>
+        Each turn you can hire, fire or move as many Fixers as you like. <b>Warning: You can only have one of your own Fixers per computer.</b>
+        <br>
+        At the end of the turn, each Fixer causes the bug on the computer where it is present to lose 1 level.
+        <br>
+        <br>
+        <h2>Bugs</h2>
+        Regularly, bugs will appear on computers. These bugs can be level 1, 2 or 3. The credits will only be given to you when you make the bug disappear completely (when it goes from level 1 to level 0).
+        <br>
+        Bugs evolve regularly (never exceeding level 3). However, the credits you earn depends solely on the level of the bug at the time it appeared <i>(yes, if you took too long to intervene, it's your fault, not the customer's)</i>.
+        <br>
+        <br>
+        <h2>Commands</h2>
+        Each turn you can use as many commands as you like, separated by <const>;</const>
+        <br>
+        Possible commands are:
         <ul>
-          <li>They move around.</li>
-        </ul>
-        You <strong>lose</strong> if:
-        <ul>
-          <li>You mess up.</li>
-          <li>You do not supply a valid sequence of actions.</li>
+          <li><action>WAIT</action>: Do nothing</li>
+          <li><action>HIRE &lt;x&gt; &lt;y&gt;</action>: Hires a new Fixer at precised coordinates</li>
+          <li><action>MOVE &lt;id&gt; &lt;x&gt; &lt;y&gt;</action>: Move specified Fixer to new coordinates</li>
+          <li><action>FIRE &lt;id&gt;</action>: Fire the Fixer</li>
         </ul>
       </div>
     </div>
   </div>
+  <div class="statement-section statement-rules">
+    <!-- Victory conditions -->
+    <div class="statement-victory-conditions">
+      <div class="icon victory"></div>
+      <div class="blk">
+        <div class="title">Victory Conditions</div>
+        <div class="text">
+          <ul style="padding-top:0; padding-bottom: 0;">
+            <li>After <strong><const>200</const> turns</strong>, you have more credits than your opponent.</li>
+            <li>Your opponent can no longer pay his Fixers.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Lose conditions -->
+    <div class="statement-lose-conditions">
+      <div class="icon lose"></div>
+      <div class="blk">
+        <div class="title">Defeat Conditions</div>
+        <div class="text">
+          <ul style="padding-top:0; padding-bottom: 0;">
+            <li>You don't have enough money to pay your Fixers.</li>
+            <li>Your program does not provide a valid command in time.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  <br>
+  <br>
   <!-- EXPERT RULES -->
   <div class="statement-section statement-expertrules">
     <h1>
@@ -47,39 +102,30 @@
       <span>Expert Rules</span>
     </h1>
     <div class="statement-expert-rules-content">
-      If you're going to run local simulations, you'll need to know this!
+      <ul>
+        <li><b>[NOT IMPLEMENTED]</b>If you and your opponent have a Fixer on the same computer, the bug loses 2 levels. If the bug is solved, you both win the full amount.</li>
+        <li>The credits you earn by fixing a bug are: <var>initial_bug_level * 5</var>.</li>
+        <li>Each Fixer costs you 1 credit if it is still in play at the end of the round.</li>
+      </ul>
     </div>
   </div>
-  <!-- EXAMPLES -->
+  <!-- INSTRUCTIONS ORDER -->
   <div class="statement-section statement-examples">
     <h1>
       <span class="icon icon-example">&nbsp;</span>
-      <span>Example</span>
+      <span>Instructions order for a turn</span>
     </h1>
 
     <div class="statement-examples-text">
-      A basic situation, an instruction, a result.
+      <ul>
+        <li><b>1)</b> Commands are applied</li>
+        <li><b>2)</b> Fixers still in play reduce bug level by 1</li>
+        <li><b>3)</b> You pay 1 credit per Fixer still in play</li>
+        <li><b>4)</b> Bugs may evolve if enough time has elapsed</li>
+        <li><b>5)</b> A new bug may spawn if enough time has elapsed</li>
+      </ul>
     </div>
 
-  </div>
-  <!-- WARNING -->
-  <div class="statement-section statement-warning">
-    <h1>
-      <span class="icon icon-warning">&nbsp;</span>
-      <span>Note</span>
-    </h1>
-    <div class="statement-warning-content">
-      <b>Don’t forget to run the tests by launching them from the “Test cases” window</b>. You can submit at any time
-      to recieve a score against the training validators. <b>You can submit as many times as you like</b>. Your most
-      recent submission will be used for the final ranking.<br>
-      <br>
-      <strong>Warning:</strong> the validation tests used to compute the final score are not the same as the ones used
-      during the event.
-      Harcoded solutions will not score highly.<br>
-      <br>
-      Don't hesitate to change the viewer's options to help debug your code (<img style="opacity:.8;background:#20252a;"
-        height="18" src="https://www.codingame.com/servlet/fileservlet?id=3463235186409" width="18">).
-    </div>
   </div>
   <!-- PROTOCOL -->
   <div class="statement-section statement-protocol">
@@ -89,44 +135,50 @@
     </h1>
     <!-- Protocol block -->
     <div class="blk">
-      <div class="text">The program must first read the initialization data from standard input. Then, provide to the
-        standard output one line with ...</div>
+      <div class="title">Initialization input</div>
+      <div class="text">
+        <p><span class="statement-lineno">Line 1: </span>one integer <var>mapWidth</var>, the number of computers on the horizontal axis</p>
+        <p><span class="statement-lineno">Line 2: </span>one integer <var>mapHeight</var>, the number of computers on the vertical axis</p>
+      </div>
     </div>
 
     <!-- Protocol block -->
     <div class="blk">
       <div class="title">Input</div>
       <div class="text">
-        <p><span class="statement-lineno">Line 1: </span>one string <var>...</var>, the ...</p>
+        <p><span class="statement-lineno">Line 1: </span>one integer <var>caseCount</var>, the number of computers</p>
+        <p><span class="statement-lineno"><var>caseCount</var> next lines</span>: 3 integers to describe computers:
+        <ul style="padding-left: 20px;padding-top:0;padding-bottom:0px">
+          <li><var>x</var>: The computer position on the horizontal axis</li>
+          <li><var>y</var>: The computer position on the vertical axis</li>
+          <li><var>bugLevel</var>: The current bug level (<const>0</const> if there is no bug)</li>
+        </ul>
       </div>
-    </div>
-
-    <!-- Protocol block -->
-    <div class="blk">
-      <div class="title">Output</div>
       <div class="text">
-        <span class="statement-lineno">A single line</span> containing ...
-        <br>
+        <p><span class="statement-lineno">Next line: </span>one integer <var>fixerCount</var>, the number of computers</p>
+        <p><span class="statement-lineno"><var>fixerCount</var> next lines</span>: 4 integers to describe Fixers:
+        <ul style="padding-left: 20px;padding-top:0;padding-bottom:0px">
+          <li><var>id</var>: The unique identifier of the Fixer</li>
+          <li><var>x</var>: The computer position on the horizontal axis</li>
+          <li><var>y</var>: The computer position on the vertical axis</li>
+          <li><var>owner</var>:
+            <ul style="padding-left: 20px;padding-top:0;padding-bottom:0px">
+                <li><const>1</const>: One of your Fixers</li>
+                <li><const>-1</const>: One of your opponent Fixers</li>
+          </li>
+        </ul>
       </div>
     </div>
 
-    <!-- Protocol block -->
     <div class="blk">
-      <div class="title">Constraints</div>
-      <div class="text"><var>...</var> contains between 1 and 500 characters.<br>
-        <br>Allotted response time to output
-        is ≤ <const>2</const> seconds.</div>
-    </div>
-  </div>
-  <!-- STORY -->
-  <div class="statement-story-background">
-    <div class="statement-story-cover" style="background-size: cover; background-image: url(https://www.codingame.com/servlet/fileservlet?id=2210505809934)">
-      <div class="statement-story">
-        <h1>Title</h1>
-        <div class="story-text">Story
-          <br>
-          Totally optional</div>
-      </div>
+      <div class="title">Output for One Game Turn</div>
+      <p><span class="statement-lineno">one line</span> containing the commands, separated by <const>;</const> Possible commands are:</p>
+      <ul style="padding-left: 20px;padding-top: 0">
+            <li><action>WAIT</action>: Do nothing</li>
+          <li><action>HIRE &lt;x&gt; &lt;y&gt;</action>: Hires a new Fixer at precised coordinates</li>
+          <li><action>MOVE &lt;id&gt; &lt;x&gt; &lt;y&gt;</action>: Move specified Fixer to new coordinates</li>
+          <li><action>FIRE &lt;id&gt;</action>: Fire the Fixer</li>
+      </ul>
     </div>
   </div>
 </div>

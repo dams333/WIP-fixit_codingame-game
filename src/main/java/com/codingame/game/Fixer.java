@@ -11,12 +11,10 @@ public class Fixer {
 	private int y;
 	private int ownerIndex;
 	private GraphicEntityModule graphicEntityModule;
-	private TooltipModule tooltips;
 	private Sprite sprite;
 
 	public Fixer(int x, int y, int ownerIndex, GraphicEntityModule graphicEntityModule, TooltipModule tooltips) {
 		this.graphicEntityModule = graphicEntityModule;
-		this.tooltips = tooltips;
 		this.x = x;
 		this.y = y;
 		this.ownerIndex = ownerIndex;

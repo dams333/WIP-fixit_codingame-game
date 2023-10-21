@@ -6,9 +6,11 @@ import java.math.*;
  * Auto-generated code below aims at helping you parse
  * the standard input according to the problem statement.
  **/
+@SuppressWarnings("unused")
 class Agent2 {
 
     public static void main(String args[]) {
+		@SuppressWarnings("resource")
         Scanner in = new Scanner(System.in);
         int mapWidth = in.nextInt();
         int mapHeight = in.nextInt();

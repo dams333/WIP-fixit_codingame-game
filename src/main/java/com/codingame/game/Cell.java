@@ -113,7 +113,7 @@ public class Cell {
 	}
 
 	public String export() {
-		return String.format("%d %d %d", x, y, bugLevel);
+		return String.format("%d %d %d %d", x, y, bugLevel, turnToUpgradeBug == 0 ? 0 : turnToUpgradeBug - 1);
 	}
 
 	public void fix(Fixer fixer, MultiplayerGameManager<Player> gameManager) {

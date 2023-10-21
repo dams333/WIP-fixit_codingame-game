@@ -152,4 +152,8 @@ public class Grid {
 			}
 		}
 	}
+
+	public int getTurnToSpawnBug() {
+		return toSpawnBug;
+	}
 }

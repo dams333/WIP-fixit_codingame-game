@@ -57,6 +57,10 @@ public class Referee extends AbstractReferee {
     public void gameTurn(int turn) {
 		List<String> gridExport = grid.export();
         for (Player player : gameManager.getActivePlayers()) {
+			int selfMoney = player.getScore();
+			int otherMoney = gameManager.getPlayers().get(1 - player.getIndex()).getScore();
+			player.sendInputLine(selfMoney + " " + otherMoney);
+			player.sendInputLine("" + grid.getTurnToSpawnBug());
             player.sendInputLine("" + gridExport.size());
 			for (String line : gridExport) {
 				player.sendInputLine(line);

@@ -20,12 +20,16 @@ class Player {
             for (int i = 0; i < mapWidth; i++) {
                 grid.add(new ArrayList<Integer>(mapHeight));
             }
+			int myCredits = in.nextInt();
+            int opponentCredits = in.nextInt();
+			int spawnBug = in.nextInt(); // number of turns before the next bug appears (0 = appears at the end of current turn)
             int caseCount = in.nextInt();
             int bugMax = 0;
             for (int i = 0; i < caseCount; i++) {
                 int x = in.nextInt();
                 int y = in.nextInt();
                 int bugLevel = in.nextInt(); // 0 = no bug / 1,2,3 = bug level on the case
+				int upgradeBug = in.nextInt(); // number of turns before the bug upgrades (0 = upgrades at the end of current turn)
                 grid.get(x).add(bugLevel);
                 if (bugLevel > bugMax)
                     bugMax = bugLevel;

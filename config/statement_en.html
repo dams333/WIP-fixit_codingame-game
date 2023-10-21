@@ -36,13 +36,13 @@
         <br>
         Throughout the game, bugs will appear and evolve. Your goal will be to manage your Fixers team in order to earn more money than your opponent.
         <br>
-        Beware, each Fixer will cost you money. You must therefore avoid losing too many credits.
+        Beware, each Fixer will cost you money. You starts with <const>100</const> credits and must therefore avoid losing too many.
         <br>
         <br>
         <h2>Fixers</h2>
         Your Fixers are autonomous. All you have to do is tell them and they will automatically act on the computer to which they are assigned.
         <br>
-        Each turn you can hire, fire or move as many Fixers as you like. <b>Warning: You can only have one of your own Fixers per computer.</b>
+        Each turn you can hire, fire or move as many Fixers as you like. <b>Warning: There can only be one Fixer from each player per computer.</b>
         <br>
         At the end of the turn, each Fixer causes the bug on the computer where it is present to lose 1 level.
         <br>
@@ -58,8 +58,8 @@
         <br>
         Possible commands are:
         <ul>
-          <li><action>WAIT</action>: Do nothing</li>
-          <li><action>HIRE &lt;x&gt; &lt;y&gt;</action>: Hires a new Fixer at precised coordinates</li>
+          <li><action>WAIT</action>: Do nothing (If there are other commands, it will be ignored.)</li>
+          <li><action>HIRE &lt;x&gt; &lt;y&gt;</action>: Hires a new Fixer at specified coordinates</li>
           <li><action>MOVE &lt;id&gt; &lt;x&gt; &lt;y&gt;</action>: Move specified Fixer to new coordinates</li>
           <li><action>FIRE &lt;id&gt;</action>: Fire the Fixer</li>
         </ul>
@@ -88,6 +88,7 @@
         <div class="text">
           <ul style="padding-top:0; padding-bottom: 0;">
             <li>You don't have enough money to pay your Fixers.</li>
+            <li>After <strong><const>200</const> turns</strong>, you have less credits than your opponent.</li>
             <li>Your program does not provide a valid command in time.</li>
           </ul>
         </div>
@@ -120,9 +121,10 @@
       <ul>
         <li><b>1)</b> Commands are applied</li>
         <li><b>2)</b> Fixers still in play reduce bug level by 1</li>
-        <li><b>3)</b> You pay 1 credit per Fixer still in play</li>
-        <li><b>4)</b> Bugs may evolve if enough time has elapsed</li>
-        <li><b>5)</b> A new bug may spawn if enough time has elapsed</li>
+        <li><b>3)</b> You earn credits for solved bugs</li>
+        <li><b>4)</b> You pay 1 credit per Fixer still in play</li>
+        <li><b>5)</b> Bugs may evolve if enough time has elapsed</li>
+        <li><b>6)</b> A new bug may spawn if enough time has elapsed</li>
       </ul>
     </div>
 
@@ -146,12 +148,15 @@
     <div class="blk">
       <div class="title">Input</div>
       <div class="text">
-        <p><span class="statement-lineno">Line 1: </span>one integer <var>caseCount</var>, the number of computers</p>
+        <p><span class="statement-lineno">Line 1: </span>two integer <var>myCredits</var> and <var>opponentCredits</var>, the number of credits per player</p>
+        <p><span class="statement-lineno">Line 2: </span>one integer <var>spawnBug</var>, the number of turns to wait before a new bug appears on the map. If the value is 0, a bug will appear at the end of the round.</p>
+        <p><span class="statement-lineno">Line 3: </span>one integer <var>caseCount</var>, the number of computers</p>
         <p><span class="statement-lineno"><var>caseCount</var> next lines</span>: 3 integers to describe computers:
         <ul style="padding-left: 20px;padding-top:0;padding-bottom:0px">
           <li><var>x</var>: The computer position on the horizontal axis</li>
           <li><var>y</var>: The computer position on the vertical axis</li>
           <li><var>bugLevel</var>: The current bug level (<const>0</const> if there is no bug)</li>
+          <li><var>upgradeBug</var>: the number of turns to wait before the bug upgrade. If the value is 0, the bug will be upgraded at the end of the round (if it can be).</li>
         </ul>
       </div>
       <div class="text">
@@ -159,8 +164,8 @@
         <p><span class="statement-lineno"><var>fixerCount</var> next lines</span>: 4 integers to describe Fixers:
         <ul style="padding-left: 20px;padding-top:0;padding-bottom:0px">
           <li><var>id</var>: The unique identifier of the Fixer</li>
-          <li><var>x</var>: The computer position on the horizontal axis</li>
-          <li><var>y</var>: The computer position on the vertical axis</li>
+          <li><var>x</var>: The Fixer position on the horizontal axis</li>
+          <li><var>y</var>: The Fixer position on the vertical axis</li>
           <li><var>owner</var>:
             <ul style="padding-left: 20px;padding-top:0;padding-bottom:0px">
                 <li><const>1</const>: One of your Fixers</li>
@@ -175,7 +180,7 @@
       <p><span class="statement-lineno">one line</span> containing the commands, separated by <const>;</const> Possible commands are:</p>
       <ul style="padding-left: 20px;padding-top: 0">
             <li><action>WAIT</action>: Do nothing</li>
-          <li><action>HIRE &lt;x&gt; &lt;y&gt;</action>: Hires a new Fixer at precised coordinates</li>
+          <li><action>HIRE &lt;x&gt; &lt;y&gt;</action>: Hires a new Fixer at specified coordinates</li>
           <li><action>MOVE &lt;id&gt; &lt;x&gt; &lt;y&gt;</action>: Move specified Fixer to new coordinates</li>
           <li><action>FIRE &lt;id&gt;</action>: Fire the Fixer</li>
       </ul>

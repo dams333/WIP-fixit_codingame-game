@@ -2,8 +2,10 @@ read mapWidth:int
 read mapHeight:int
 
 gameloop
+read myCredits:int opponentCredits:int
+read spawnBug:int
 read caseCount:int
-loop caseCount read x:int y:int bugLevel:int
+loop caseCount read x:int y:int bugLevel:int upgradeBug:int
 
 read fixerCount:int
 loop fixerCount read id:int x:int y:int owner:int
@@ -11,7 +13,9 @@ loop fixerCount read id:int x:int y:int owner:int
 write cmd1; cmd2
 
 INPUT
+spawnBug: number of turns before the next bug appears (0 = appears at the end of current turn)
 bugLevel: 0 = no bug / 1,2,3 = bug level on the case
+upgradeBug: number of turns before the bug upgrades (0 = upgrades at the end of current turn)
 owner: 1 = you / -1 = opponent
 
 OUTPUT

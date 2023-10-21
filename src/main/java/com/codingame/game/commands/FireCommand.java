@@ -18,6 +18,6 @@ public class FireCommand extends Command {
 			return;
 		}
 		grid.fireFixer(id);
-		gameManager.addToGameSummary(String.format("%s hired fixer %d", p.getNicknameToken(), id));
+		gameManager.addToGameSummary(String.format("%s fired fixer %d", p.getNicknameToken(), id));
 	}
 }

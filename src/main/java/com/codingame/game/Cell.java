@@ -1,5 +1,7 @@
 package com.codingame.game;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.codingame.gameengine.core.MultiplayerGameManager;
@@ -23,6 +25,8 @@ public class Cell {
 	private Random random;
 
 	private int turnToUpgradeBug = 0;
+
+	private List<Player> fixedAtThisTurn = new ArrayList<Player>();
 
 	public Cell(int x, int y, GraphicEntityModule graphicEntityModule, TooltipModule tooltips, Random random) {
 		this.random = random;
@@ -58,6 +62,7 @@ public class Cell {
 	}
 
 	public void update() {
+		fixedAtThisTurn.clear();
 		if (turnToUpgradeBug > 0) {
 			turnToUpgradeBug--;
 			if (turnToUpgradeBug == 0) {
@@ -124,13 +129,21 @@ public class Cell {
 			}
 			this.updateDisplay(0.4, 0.6);
 			Player p = gameManager.getPlayers().get(fixer.getPlayerIndex());
+			fixedAtThisTurn.add(p);
 			if (bugLevel != 0)
 				gameManager.addToGameSummary(p.getNicknameToken() + " worked on a bug at (" + x + ";" + y + "). It's now level " + bugLevel + "!");
 			else {
 				int won = originalBugLevel * 5;
-				gameManager.addToGameSummary(p.getNicknameToken() + " fixed a bug at (" + x + ";" + y + "). He won " + won + " credits!");
-				p.setScore(p.getScore() + won);
+				for (Player pl : fixedAtThisTurn) {
+					gameManager.addToGameSummary(pl.getNicknameToken() + " fixed a bug at (" + x + ";" + y + "). He won " + won + " credits!");
+					pl.setScore(pl.getScore() + won);
+				}
 			}
+		} else if (fixedAtThisTurn.size() > 0) {
+			int won = originalBugLevel * 5;
+			Player pl = gameManager.getPlayers().get(fixer.getPlayerIndex());
+			gameManager.addToGameSummary(pl.getNicknameToken() + " fixed a bug at (" + x + ";" + y + "). He won " + won + " credits!");
+			pl.setScore(pl.getScore() + won);
 		}
 	}
 }

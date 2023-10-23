@@ -59,7 +59,7 @@
         Possible commands are:
         <ul>
           <li><action>WAIT</action>: Do nothing (If there are other commands, it will be ignored.)</li>
-          <li><action>HIRE &lt;x&gt; &lt;y&gt;</action>: Hires a new Fixer at specified coordinates</li>
+          <li><action>HIRE &lt;x&gt; &lt;y&gt;</action>: Hires a new Fixer at specified coordinates (Cost 10 credits)</li>
           <li><action>MOVE &lt;id&gt; &lt;x&gt; &lt;y&gt;</action>: Move specified Fixer to new coordinates</li>
           <li><action>FIRE &lt;id&gt;</action>: Fire the Fixer</li>
         </ul>
@@ -105,7 +105,8 @@
     <div class="statement-expert-rules-content">
       <ul>
         <li>If you and your opponent have a Fixer on the same computer, the bug loses 2 levels. If the bug is solved, you both win the full amount.</li>
-        <li>The credits you earn by fixing a bug are: <var>initial_bug_level * 5</var>.</li>
+        <li>Commands are applied in the order in which they are written. If a command cannot be executed (lack of money, no space on the computer, etc...), it is ignored and execution continues with the next command.</li>
+		<li>The credits you earn by fixing a bug are: <var>initial_bug_level * 5</var>.</li>
         <li>Each Fixer costs you 1 credit if it is still in play at the end of the round.</li>
       </ul>
     </div>

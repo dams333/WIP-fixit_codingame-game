@@ -31,9 +31,6 @@ public class Grid {
 		this.gameManager = gameManager;
 		this.random = random;
 		fixers = new ArrayList<Fixer>();
-		for (Player p : gameManager.getActivePlayers()) {
-			fixers.add(new Fixer(0, 0, p.getIndex(), graphicEntityModule, tooltips));
-		}
 
 		grid = new ArrayList<List<Cell>>(gridWidth);
 		for(int x = 0; x < gridWidth; x++) {

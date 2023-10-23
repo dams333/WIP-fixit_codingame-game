@@ -41,6 +41,10 @@ class Agent2 {
             // Write an answer using System.out.println()
             // To debug: System.err.println("Debug messages...");
 
+			if (myFixerId == -1) {
+				System.out.println("HIRE 0 0"); // HIRE <x> <y>
+				continue;
+			}
 			Random rand = new Random();
 			int x = rand.nextInt(mapWidth);
 			int y = rand.nextInt(mapHeight);

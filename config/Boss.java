@@ -53,6 +53,10 @@ class Player {
             // Write an answer using System.out.println()
             // To debug: System.err.println("Debug messages...");
 
+			if (myFixerId == -1) {
+				System.out.println("HIRE 0 0"); // HIRE <x> <y>
+				continue;
+			}
             if (grid.get(myFixerX).get(myFixerY) > 0) {
                 System.out.println("WAIT");
             } else {

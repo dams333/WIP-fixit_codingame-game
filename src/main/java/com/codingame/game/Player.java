@@ -57,7 +57,9 @@ public class Player extends AbstractMultiplayerPlayer {
 	}
 
 	public void updateHud() {
+		graphicEntityModule.commitEntityState(0.7, creditsText);
 		creditsText.setText("" + getScore());
+		graphicEntityModule.commitEntityState(0.9, creditsText);
 	}
 
 	public List<Command> parse(String input, Grid grid) throws InvalidCommandException {

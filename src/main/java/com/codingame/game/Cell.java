@@ -73,7 +73,7 @@ public class Cell {
 			}
 		}
 
-		this.updateDisplay(0.7, 1);
+		this.updateDisplay(0.7, 0.9);
 	}
 
 	private void updateDisplay(double before, double after) {

@@ -9,6 +9,9 @@ import com.codingame.gameengine.core.AbstractReferee;
 import com.codingame.gameengine.core.GameManager;
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
+import com.codingame.gameengine.module.entities.Group;
+import com.codingame.gameengine.module.entities.Rectangle;
+import com.codingame.gameengine.module.entities.Text;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -100,14 +103,18 @@ public class Referee extends AbstractReferee {
 				continue;
 			}
         }
-		if (isEnded)
+		if (isEnded) {
+			drawEndGame();
 			return;
+		}
 
 		isEnded = grid.update();
 		drawHud();
 
-		if (isEnded)
+		if (isEnded) {
+			drawEndGame();
 			return;
+		}
 
 		if (turn == 200) {
 			gameManager.addToGameSummary("After 200 turns, " + gameManager.getPlayers().get(0).getNicknameToken() + " has " + gameManager.getPlayers().get(0).getScore() + " credits and " + gameManager.getPlayers().get(1).getNicknameToken() + " has " + gameManager.getPlayers().get(1).getScore() + " credits.");
@@ -123,6 +130,52 @@ public class Referee extends AbstractReferee {
 				gameManager.addToGameSummary(GameManager.formatSuccessMessage("It's a draw!"));
 			}
 			gameManager.endGame();
+			drawEndGame();
 		}
     }
+
+	private void drawEndGame() {
+		Group group = graphicEntityModule.createGroup()
+			.setZIndex(20)
+			.setAlpha(0);
+		Rectangle rectangle = graphicEntityModule.createRectangle()
+			.setWidth(1920)
+			.setHeight(1080)
+			.setAlpha(0.8)
+			.setFillColor(0x202020);
+		group.add(rectangle);
+
+		Player winner = gameManager.getPlayers().get(0);
+		Player loser = gameManager.getPlayers().get(1);
+		if (winner.getScore() < loser.getScore()) {
+			winner = gameManager.getPlayers().get(1);
+			loser = gameManager.getPlayers().get(0);
+		}
+
+		String winnerText = "1) " + winner.getNicknameToken() + " (" + winner.getScore() + " credits)";
+		String loserText = "2) " + loser.getNicknameToken() + " (" + loser.getScore() + " credits)";
+		if (winner.getScore() == loser.getScore())
+			loserText = "1) " + loser.getNicknameToken() + " (" + loser.getScore() + " credits)";
+
+		Text winnerTextElement = graphicEntityModule.createText(winnerText)
+			.setAnchor(0.5)
+			.setX(1920 / 2)
+			.setY(1080 / 2 - 50)
+			.setFontSize(60)
+			.setZIndex(21)
+			.setFillColor(winner.getColorToken());
+		group.add(winnerTextElement);
+		Text loserTextElement = graphicEntityModule.createText(loserText)
+			.setAnchor(0.5)
+			.setX(1920 / 2)
+			.setY(1080 / 2 + 50)
+			.setFontSize(60)
+			.setZIndex(21)
+			.setFillColor(loser.getColorToken());
+		group.add(loserTextElement);
+
+		graphicEntityModule.commitEntityState(0.7, group);
+		group.setAlpha(1);
+		graphicEntityModule.commitEntityState(1, group);
+	}
 }

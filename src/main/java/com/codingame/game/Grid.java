@@ -66,9 +66,12 @@ public class Grid {
 		}
 
 		if (toSpawnBug == 0) {
-			int cell = random.nextInt(gridWidth * gridHeight);
-			grid.get(cell % gridWidth).get(cell / gridWidth).spawnBug();
-			toSpawnBug = random.nextInt(2) + 1;
+			int spawnCount = random.nextInt(3) + 1;
+			for (int i = 0; i < spawnCount; i++) {
+				int cell = random.nextInt(gridWidth * gridHeight);
+				grid.get(cell % gridWidth).get(cell / gridWidth).spawnBug();
+			}
+			toSpawnBug = random.nextInt(3) + 1;
 		}
 		toSpawnBug--;
 
